@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<configuration scan="true">
+    <springProperty name="logfile" source="log.file"/>
+
+    <springProperty name="maxFileSize" source="log.maxvalue"/>
+    <!--<springProperty name="pattern" source="log.pattern"/>-->
+    <!--<springProperty name="" source=""/>-->
+
+
+    <!--记录sql日志的-->
+    <appender name="sql" class="ch.qos.logback.core.rolling.RollingFileAppender" >
+        <file>${logfile}.sql</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logfile}.sql.%d{yyyy-MM-dd HH:mm:ss}.%i</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d [%thread] %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--记录错误日志的-->
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logfile}.error</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logfile}.error.%d{yyyy-MM-dd HH:mm:ss}.%i</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %-4relative [%thread] %-5level %logger{30} - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <!--这是记录INFO信息的记录到文件夹中-->
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logfile}.info</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logfile}.info.%d{yyyy-MM-dd HH:mm:ss}.%i</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="error"/>
+        <appender-ref ref="info"/>
+    </root>
+
+    <logger name="life.male.community.mapper" level="DEBUG" additivity="true">
+        <appender-ref ref="sql" />
+    </logger>
+
+
+
+</configuration>

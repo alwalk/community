@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!--<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/depot"
+                        userId="root"
+                        password="root">
+
+        </jdbcConnection>
+        <!--把数据库中的字段decimal或者number自动转为java中的bigdecimal,可选可不选-->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--生成javabean-->
+        <javaModelGenerator targetPackage="life.male.community.pojo" targetProject="src/main/java">
+            <!--没有指定路径，那么会自动创建路径-->
+            <property name="enableSubPackages" value="true" />
+            <!--查询语句去掉空格-->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--生成xml文件以及放置xml文件的包-->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
+            <!--没有指定具体的包路径，那么会进行自动创建包路径，并把生成的xml放入包中-->
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--生成xml对应的dao接口-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="life.male.community.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+
+        <table    tableName="user" domainObjectName="User" >
+        </table>
+
+    </context>
+</generatorConfiguration>
